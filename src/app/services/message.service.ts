@@ -21,7 +21,8 @@ export interface MessageResponse {
   providedIn: 'root'
 })
 export class MessageService {
-  private apiUrl = 'http://localhost:3000';
+  // Use environment variable or fallback to localhost
+  private apiUrl = (window as any).__env?.API_URL || 'http://localhost:3000';
   private messagesUpdatedSubject = new Subject<void>();
   public messagesUpdated$ = this.messagesUpdatedSubject.asObservable();
 
