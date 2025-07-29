@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MessageService, MessageResponse } from '../../services/message.service';
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-message-history',
@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 export class MessageHistory implements OnInit, OnDestroy {
   messages: MessageResponse[] = [];
   private subscription: Subscription = new Subscription();
+  private autoRefreshSubscription: Subscription = new Subscription();
 
   constructor(
     private messageService: MessageService,
@@ -23,7 +24,7 @@ export class MessageHistory implements OnInit, OnDestroy {
   ngOnInit() {
     console.log('MessageHistory: ngOnInit called');
     this.loadMessages();
-    
+
     // Subscribe to message refresh events
     this.subscription.add(
       this.messageService.messagesUpdated$.subscribe(() => {
@@ -31,11 +32,18 @@ export class MessageHistory implements OnInit, OnDestroy {
         this.loadMessages();
       })
     );
+
+    // Auto-refresh every 10 seconds to check for webhook updates
+    this.autoRefreshSubscription = interval(10000).subscribe(() => {
+      console.log('MessageHistory: Auto-refreshing messages');
+      this.loadMessages();
+    });
   }
 
   ngOnDestroy() {
     console.log('MessageHistory: ngOnDestroy called');
     this.subscription.unsubscribe();
+    this.autoRefreshSubscription.unsubscribe();
   }
 
   loadMessages() {
@@ -74,10 +82,33 @@ export class MessageHistory implements OnInit, OnDestroy {
         return 'status-delivered';
       case 'sent':
         return 'status-sent';
+      case 'queued':
+        return 'status-queued';
       case 'failed':
         return 'status-failed';
+      case 'undelivered':
+        return 'status-failed';
+      case 'pending':
       default:
         return 'status-pending';
+    }
+  }
+
+  getStatusDisplayName(status: string): string {
+    switch (status?.toLowerCase()) {
+      case 'delivered':
+        return 'Delivered ✓';
+      case 'sent':
+        return 'Sent';
+      case 'queued':
+        return 'Queued';
+      case 'failed':
+        return 'Failed';
+      case 'undelivered':
+        return 'Undelivered';
+      case 'pending':
+      default:
+        return 'Pending';
     }
   }
 }
