@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">Message History ({{ messages.length }})</h5>
+  </div>
+  <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+    <div *ngIf="messages.length === 0" class="text-center text-muted py-4">
+      No messages sent yet
+    </div>
+    
+    <div *ngFor="let message of messages" class="message-item mb-3">
+      <div class="d-flex justify-content-between align-items-start">
+        <div class="phone-number">{{ message.to }}</div>
+        <div class="timestamp">{{ formatDate(message.created_at) }}</div>
+      </div>
+      
+      <div class="message-bubble mt-2">
+        {{ message.content }}
+      </div>
+      
+      <div class="message-footer mt-2">
+        <span class="character-count">{{ message.content.length }}/250</span>
+        <span class="status-badge ms-2" [class]="getStatusClass(message.status)">
+          {{ message.status }}
+        </span>
+      </div>
+      
+      <div *ngIf="message.error_message" class="error-message mt-1">
+        <small class="text-danger">{{ message.error_message }}</small>
+      </div>
+    </div>
+  </div>
+</div>

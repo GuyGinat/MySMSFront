@@ -1,0 +1,45 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="mb-0">New Message</h5>
+  </div>
+  <div class="card-body">
+    <form (ngSubmit)="sendMessage()" #messageForm="ngForm">
+      <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number</label>
+        <input 
+          type="tel" 
+          class="form-control" 
+          id="phoneNumber"
+          name="phoneNumber"
+          [(ngModel)]="phoneNumber"
+          (ngModelChange)="onPhoneNumberChange()"
+          placeholder="Enter phone number"
+          required>
+      </div>
+      
+      <div class="mb-3">
+        <label for="messageContent" class="form-label">Message</label>
+        <textarea 
+          class="form-control" 
+          id="messageContent"
+          name="messageContent"
+          [(ngModel)]="messageContent"
+          (ngModelChange)="onMessageContentChange()"
+          rows="4"
+          placeholder="Enter your message"
+          maxlength="250"
+          required></textarea>
+        <div class="form-text text-end">
+          {{ messageContent.length }}/250
+        </div>
+      </div>
+      
+      <div class="d-flex justify-content-between">
+        <button type="button" class="btn btn-link" (click)="clearForm()">Clear</button>
+        <button type="submit" class="btn btn-dark" [disabled]="!messageForm.valid || isSending">
+          {{ isSending ? 'Sending...' : 'Send Message' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
