@@ -31,12 +31,12 @@ export class MessageService {
     console.log('MessageService: Sending message:', message);
     return this.http.post<MessageResponse>(`${this.apiUrl}/messages`, {
       message: message
-    });
+    }, { withCredentials: true });
   }
 
   getMessages(): Observable<MessageResponse[]> {
     console.log('MessageService: Getting messages...');
-    return this.http.get<MessageResponse[]>(`${this.apiUrl}/messages`);
+    return this.http.get<MessageResponse[]>(`${this.apiUrl}/messages`, { withCredentials: true });
   }
 
   refreshMessages(): void {
