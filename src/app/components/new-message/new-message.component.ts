@@ -91,12 +91,11 @@ export class NewMessageComponent {
         this.clearForm();
         // Trigger refresh of message history
         this.messageService.refreshMessages();
+        this.isSending = false;
       },
       error: (error) => {
         console.error('Error sending message:', error);
         alert('Failed to send message. Please try again.');
-      },
-      complete: () => {
         this.isSending = false;
       }
     });
