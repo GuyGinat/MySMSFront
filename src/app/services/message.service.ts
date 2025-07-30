@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Message {
   to: string;
@@ -21,8 +22,7 @@ export interface MessageResponse {
   providedIn: 'root'
 })
 export class MessageService {
-  // Use environment variable or fallback to localhost
-  private apiUrl = (window as any).__env?.API_URL || 'http://localhost:3000';
+  private apiUrl = environment.API_URL;
   private messagesUpdatedSubject = new Subject<void>();
   public messagesUpdated$ = this.messagesUpdatedSubject.asObservable();
 

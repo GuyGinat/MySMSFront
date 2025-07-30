@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface User {
   id: string;
@@ -27,8 +28,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  // Use environment variable or fallback to localhost
-  private apiUrl = (window as any).__env?.API_URL || 'http://localhost:3000';
+  private apiUrl = environment.API_URL;
 
   constructor(private http: HttpClient) {}
 
