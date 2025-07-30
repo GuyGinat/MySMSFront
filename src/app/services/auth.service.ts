@@ -36,12 +36,12 @@ export class AuthService {
     console.log('AuthService: Registering user:', request);
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, {
       user: request
-    }, { withCredentials: false });
+    }, { withCredentials: true });
   }
 
   login(request: LoginRequest): Observable<AuthResponse> {
     console.log('AuthService: Logging in user:', request);
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, request, { withCredentials: false });
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, request, { withCredentials: true });
   }
 
   // Store user data in localStorage
